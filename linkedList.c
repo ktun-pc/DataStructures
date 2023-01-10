@@ -122,6 +122,23 @@ Node * Find(Node *head, int value)
     return head;
 }
 
+// Tum Listeyi Silme
+void DeleteAll(Node *head)
+{
+    Node *tmp;
+
+    // Su anki eleman NULL degilken
+    while (head != NULL)
+    {
+        // Elemani geciyi elemana ata
+        tmp = head;
+        // Bir sonraki elemana gec
+        head = head->next;
+        // Gecicideki elemani sil
+        free(tmp);
+    }
+}
+
 int main(void)
 {
     Node *head = NULL;
@@ -134,5 +151,7 @@ int main(void)
     Node *node = Find(head, 110);
     node->value = 31;           // 31
     Print(head);
+
+    DeleteAll(head);
     return 0;
 }

@@ -5,6 +5,8 @@
 #define QUEUE_SIZE 2048
 
 // Kuyruk yapisi
+// FIFO: First  In   First  Out
+//        Ilk  Giren  Ilk  Cikar
 typedef struct Queue
 {
     // Kuyrukdaki eleman sayisi
@@ -25,6 +27,10 @@ Queue * Create()
 // Ekleme
 void Enqueue(Queue *queue, int value)
 {
+    // Eger kuyruk dolu ise ekleme yapmadan fonksiyondan cik
+    if (queue->count == QUEUE_SIZE)
+        return;
+    
     // Kuyrugun sonuna degeri ekle
     queue->items[queue->count] = value;
     // Eleman sayisi bir arttir
@@ -34,6 +40,11 @@ void Enqueue(Queue *queue, int value)
 // Cikarma
 int Dequeue(Queue *queue)
 {
+    // Eger kuyruk bos ise cikarma yapmadan fonksiyondan cik
+    // Bir deger dondurmemiz gerektiginden dolayi geriye 0 dondurmeyi tercih ettim 
+    if (queue->count == 0)
+        return 0;
+    
     // Ilk elemani degere ata
     int value = queue->items[0];
 
@@ -49,15 +60,26 @@ int Dequeue(Queue *queue)
     return value;
 }
 
+// Yazdirma
+void Print(Queue *queue)
+{
+    for (int i = 0; i < queue->count; i++)
+    {
+        printf("%d\n", queue->items[i]);
+    }
+}
+
 int main(void)
 {
     Queue *queue = Create();        //
     Enqueue(queue, 31);             // 31
     Enqueue(queue, 69);             // 31 69
     Enqueue(queue, 110);            // 31 69 110
-    printf("%d\n", Dequeue(queue)); // 31 69
-    printf("%d\n", Dequeue(queue)); // 31
-    printf("%d\n", Dequeue(queue)); // 
+ // printf("%d\n", Dequeue(queue)); // 31 69
+ // printf("%d\n", Dequeue(queue)); // 31
+ // printf("%d\n", Dequeue(queue)); //
+    Print(queue);
 
+    free(queue);
     return 0;
 }
