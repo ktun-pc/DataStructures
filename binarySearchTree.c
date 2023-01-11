@@ -109,6 +109,80 @@ void PostOrder(Node *root)
     printf("%d ", root->value);
 }
 
+// Sadece yaprak dugumleri yazdir
+void PrintLeafNodes(Node *root)
+{
+    if (root == NULL) return;
+
+    // Eger sag ve sol NULL ise cocugu yoktur yani yaprak dugumdur
+    if (root->left == NULL && root->right == NULL)
+    {
+        printf("%d\n", root->value);
+    }
+
+    PrintLeafNodes(root->left);
+    PrintLeafNodes(root->right);
+}
+
+// Dugum sayisini donduren fonksiyon
+int GetNodeCount(Node *root)
+{
+    if (root == NULL) return 0;
+
+    // Dugumun kendisi ile sol ve sag cocuklarinin
+    // adetini toplayi geriye dondur
+    int count = 1;
+    count += GetNodeCount(root->left);
+    count += GetNodeCount(root->right);
+    return count;
+}
+
+// Dugumdeki degerlerin toplamini donduren fonksiyon
+int GetTotalValue(Node *root)
+{
+    if (root == NULL) return 0;
+
+    // Dugumun kendisi ile sol ve sag cocuklarinin
+    // degerlerini toplayi geriye dondur
+    int value = root->value;
+    value += GetTotalValue(root->left);
+    value += GetTotalValue(root->right);
+    return value;
+}
+
+// Agacin ortalama degerini ekrana yazdirma
+void CalculateAverageValue(Node *root)
+{
+    int count = GetNodeCount(root);
+    int total = GetTotalValue(root);
+
+    printf("%f\n", (float)total / count);
+}
+
+// Sadece sol ve sag cogucu olanlari ekrana yazdirma
+void PrintFullyChildRoots(Node *root)
+{
+    if (root == NULL) return;
+
+    // Solu ve sagi NULL degilse yazdir
+    if (root->left != NULL && root->right != NULL)
+    {
+        printf("%d\n", root->value);
+    }
+
+    PrintFullyChildRoots(root->left);
+    PrintFullyChildRoots(root->right);
+}
+
+// Sol ve sag cocuk sayisi arasindaki farki ekrana yazdirma (sag - sol)
+void PrintChildDifference(Node *root)
+{
+    int left = GetNodeCount(root->left);
+    int right = GetNodeCount(root->right);
+
+    printf("%d\n", right - left);
+}
+
 //       3
 //     /   \
 //    2     5
@@ -128,12 +202,21 @@ int main(void)
     root = Add(root, 1);
     root = Add(root, 4);
     root = Add(root, 6);
-    PreOrder(root);
-    printf("\n");
-    InOrder(root);
-    printf("\n");
-    PostOrder(root);
-    printf("\n");
+    
+    // PreOrder(root);
+    // printf("\n");
+    // InOrder(root);
+    // printf("\n");
+    // PostOrder(root);
+    // printf("\n");
+
+    // PrintLeafNodes(root);
+    
+    // CalculateAverageValue(root);
+
+    // PrintFullyChildRoots(root);
+
+    PrintChildDifference(root);
 
     DeleteTree(root);
     return 0;

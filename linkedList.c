@@ -139,19 +139,50 @@ void DeleteAll(Node *head)
     }
 }
 
+// Iki sirali listedeki ortak degerleri yazdirma
+void PrintCommonValues(Node *head1, Node *head2)
+{
+    // Iki liste de NULL degilken yani karsilastiracagimiz
+    // degerler mevcutken
+    while (head1 != NULL && head2 != NULL)
+    {
+        // Eger degerler ayni ise
+        if (head1->value == head2->value)
+        {
+            // Ekrana yazdir ve ikisini de birer kez kaydir
+            printf("%d\n", head1->value);
+            head1 = head1->next;
+            head2 = head2->next;
+        }
+        // Eger ilk listedeki deger daha kucukse ilk listeyi kaydir
+        else if (head1->value < head2->value)
+        {
+            head1 = head1->next;
+        }
+        // Eger ikinci listedeki deger daha kucukse ikinci listeyi kaydir
+        else
+        {
+            head2 = head2->next;
+        }
+    }
+}
+
 int main(void)
 {
-    Node *head = NULL;
-    head = Add(head, 31);       // 31
-    head = Add(head, 69);       // 31 69
-    Print(head);
-    head = Delete(head, 31);    // 69
-    Update(head, 69, 110);      // 110
-    Print(head);
-    Node *node = Find(head, 110);
-    node->value = 31;           // 31
-    Print(head);
+    Node *head1 = Add(NULL, 5);
+    Add(head1, 10);
+    Add(head1, 20);
+    Add(head1, 50);
 
-    DeleteAll(head);
+    Node *head2 = Add(NULL, 10);
+    Add(head2, 30);
+    Add(head2, 50);
+    Add(head2, 70);
+
+    // 10 50
+    PrintCommonValues(head1, head2);
+
+    DeleteAll(head1);
+    DeleteAll(head2);
     return 0;
 }
